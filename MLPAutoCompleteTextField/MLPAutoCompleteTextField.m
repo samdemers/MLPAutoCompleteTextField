@@ -455,8 +455,15 @@ withAutoCompleteString:(NSString *)string
 
 - (void)closeAutoCompleteTableView
 {
-    [self.autoCompleteTableView removeFromSuperview];
-    [self restoreOriginalShadowProperties];
+    if(self.autoCompleteTableView.superview){
+        [self.autoCompleteTableView removeFromSuperview];
+        [self restoreOriginalShadowProperties];
+        if([self.autoCompleteDelegate
+            respondsToSelector:@selector(autoCompleteTextField:didHideAutoCompleteTableView:)]){
+            [self.autoCompleteDelegate autoCompleteTextField:self
+                                didHideAutoCompleteTableView:self.autoCompleteTableView];
+        }
+    }
 }
 
 
